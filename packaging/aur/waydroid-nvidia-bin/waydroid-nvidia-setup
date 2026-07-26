@@ -205,6 +205,16 @@ with open(cfg_path, "w") as f:
 print("   properties written")
 EOF
 
+echo "== installing SELinux policy module (waydroid-nvidia)"
+if command -v semodule >/dev/null 2>&1; then
+  SELMOD=/usr/lib/waydroid-nvidia/waydroid-nvidia.pp
+  if [ -f "$SELMOD" ]; then
+    semodule -i "$SELMOD" 2>/dev/null && echo "   SELinux policy installed" || echo "   SELinux policy install failed (non-fatal)"
+  else
+    echo "   policy .pp not found at $SELMOD (install manually: sudo semodule -i waydroid-nvidia.pp)"
+  fi
+fi
+
 echo "== regenerating container config (waydroid upgrade -o)"
 waydroid upgrade -o
 
