@@ -14,7 +14,7 @@ with nvidia-drm.modeset=1. The closed kernel module (nvidia / nvidia-dkms)
 lacks the DMA-BUF support this stack needs; the userspace (nvidia-utils)
 is the same regular proprietary one either way.
 Verify binary provenance of the shipped blobs:
-  gh attestation verify <asset> --repo Shiro836/waydroid-nvidia
+  gh attestation verify <asset> --repo CinQwQeggs01/waydroid-nvidia
 EOF
 }
 

@@ -39,5 +39,5 @@ runner host).
 
 Verify any asset:
 ```sh
-gh attestation verify <asset> --repo Shiro836/waydroid-nvidia
+gh attestation verify <asset> --repo CinQwQeggs01/waydroid-nvidia
 ```

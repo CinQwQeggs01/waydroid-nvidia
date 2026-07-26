@@ -15,7 +15,7 @@ attestations** — anyone can check a downloaded asset was built by that
 workflow from this repo:
 
 ```sh
-gh attestation verify waydroid-nvidia-host-x86_64-<tag>.tar.zst --repo Shiro836/waydroid-nvidia
+gh attestation verify waydroid-nvidia-host-x86_64-<tag>.tar.zst --repo CinQwQeggs01/waydroid-nvidia
 ```
 
 CI-built today: guest Venus driver (mesa), host renderer (virglrenderer),
