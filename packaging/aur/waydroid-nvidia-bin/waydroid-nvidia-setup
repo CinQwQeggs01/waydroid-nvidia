@@ -215,6 +215,38 @@ if command -v semodule >/dev/null 2>&1; then
   fi
 fi
 
+echo "== configuring ABRT to ignore waydroid Python service crashes"
+ABRT_SAVE=/etc/abrt/abrt-action-save-package-data.conf
+if [ -f "$ABRT_SAVE" ]; then
+    if ! grep -q '/usr/lib/waydroid' "$ABRT_SAVE"; then
+        python3 - "$ABRT_SAVE" <<'PYEOF'
+import re, sys
+path = sys.argv[1]
+with open(path) as f:
+    text = f.read()
+needle = "/usr/lib/waydroid/*"
+if needle in text:
+    sys.exit(0)
+# Find existing BlackListedPaths and append, or add a new entry.
+# Preserve the existing default list documented in man 5
+# abrt-action-save-package-data.conf.
+m = re.search(r"^BlackListedPaths\s*=\s*(.+)$", text, re.MULTILINE)
+if m:
+    new = m.group(0).rstrip() + ", " + needle
+    text = text[:m.start()] + new + text[m.end():]
+else:
+    text = text.rstrip() + "\nBlackListedPaths = " + needle + "\n"
+with open(path, "w") as f:
+    f.write(text)
+print("   added {} to ABRT BlackListedPaths".format(needle))
+PYEOF
+    else
+        echo "   waydroid already in ABRT BlackListedPaths"
+    fi
+else
+    echo "   $ABRT_SAVE not found (ABRT not installed? skipping)"
+fi
+
 echo "== regenerating container config (waydroid upgrade -o)"
 waydroid upgrade -o
 

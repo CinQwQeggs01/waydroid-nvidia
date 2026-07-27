@@ -47,7 +47,7 @@ pkgbase = waydroid-nvidia-bin
 	sha256sums = 61899f56c203b750d41f7c141a1ee264cb68241748cc9cda512ed45f2997cbd1
 	sha256sums = 4bc083ac6fc8d0d0fd31546f5abd9912ca1304571d5a6c9ee42351b1e745193f
 	sha256sums = 501db3b266f8a49f643d4054ba948ba40fcefe0fee1f3647bff955184acf533e
-	sha256sums = d56c2b9a8cb9ac2f4afd1afaebfa877171e78ad25fc666d5a46da5cc67db2083
+	sha256sums = c726b3d9e7626e7f6504e3f8aa1c61aaaa737239c9ff812e3a7e27e2405cc1e5
 	sha256sums = cdceadba519c3e6dada147c1a628ca64bf7f49993f84f50cc9a52da57963c9fe
 
 pkgname = waydroid-nvidia-bin
