@@ -181,6 +181,8 @@ props = {
     "ro.surface_flinger.vsync_event_phase_offset_ns": "0",
     "ro.surface_flinger.vsync_sf_event_phase_offset_ns": "0",
     "ro.surface_flinger.max_frame_buffer_acquired_buffers": "3",
+    "ro.surface_flinger.has_wide_color_display": "false",
+    "ro.surface_flinger.use_color_management": "false",
 }
 refresh = os.environ.get("REFRESH", "")
 if refresh:
