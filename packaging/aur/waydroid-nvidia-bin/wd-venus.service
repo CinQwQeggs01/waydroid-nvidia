@@ -1,5 +1,8 @@
 [Unit]
 Description=Venus vtest render server for waydroid-nvidia
+# The patched waydroid session starts and stops this unit. Do not enable it
+# for default.target: leftover vtest clients after a session restart block
+# the next SurfaceFlinger connect (listen Recv-Q stuck on venus.sock).
 
 [Service]
 Environment=RENDER_SERVER_EXEC_PATH=/usr/lib/waydroid-nvidia/virgl_render_server
@@ -16,4 +19,5 @@ Restart=on-failure
 RestartSec=1
 
 [Install]
+# Optional always-on. Session start/stop owns the lifecycle by default.
 WantedBy=default.target
