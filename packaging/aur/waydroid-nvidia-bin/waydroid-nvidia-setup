@@ -68,7 +68,11 @@ verify_android_elf() {
         *) die "internal error: unsupported Android ABI '$abi'" ;;
     esac
 
-    [ -f "$file" ] || die "required guest payload missing: $file"
+    [ -f "$file" ] || die "required guest payload missing: $file
+This file ships in the guest-prebuilts tarball (ANGLE / hwcomposer / surfaceflinger).
+Re-run packaging/install-from-release.sh — it fetches the prebuilts from this
+release, or falls back to Shiro836/waydroid-nvidia v0.1.2 when this tag did not
+publish them (issues #2 and #5)."
     header=$(LC_ALL=C readelf -hW -- "$file" 2>/dev/null) || \
         die "$file is not a complete ELF file"
     if ! grep -Eq "^[[:space:]]*Class:[[:space:]]+${expected_class}[[:space:]]*$" <<<"$header" ||
@@ -251,6 +255,28 @@ fi
 
 echo "== regenerating container config (waydroid upgrade -o)"
 waydroid upgrade -o
+
+# Fedora/RHEL liblxc is built without AppArmor; the stock waydroid snippet
+# `lxc.apparmor.profile = unconfined` is then EINVAL and the container
+# never starts (issue #6 / waydroid#1495). The patched lxc.py generator
+# already strips these keys; this is the belt for mixed installs.
+lxc_cfg=/var/lib/waydroid/lxc/waydroid/config
+if [ -f "$lxc_cfg" ]; then
+    apparmor_lxc=0
+    for lib in /usr/lib64/liblxc.so.1 /usr/lib/liblxc.so.1 \
+               /usr/lib/x86_64-linux-gnu/liblxc.so.1 \
+               /usr/lib/aarch64-linux-gnu/liblxc.so.1; do
+        [ -e "$lib" ] || continue
+        if ldd "$lib" 2>/dev/null | grep -q libapparmor; then
+            apparmor_lxc=1
+        fi
+        break
+    done
+    if [ "$apparmor_lxc" = 0 ] && grep -qE '^lxc\.(aa_profile|apparmor\.)' "$lxc_cfg"; then
+        sed -i -E '/^lxc\.(aa_profile|apparmor\.)/d' "$lxc_cfg"
+        echo "   stripped lxc.apparmor.* (liblxc built without AppArmor)"
+    fi
+fi
 
 cat <<'EOF'
 
