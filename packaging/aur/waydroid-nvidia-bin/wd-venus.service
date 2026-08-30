@@ -8,7 +8,10 @@ Environment=LD_LIBRARY_PATH=/usr/lib/waydroid-nvidia
 # The default 1024 rlimit turns GetFenceFdKHR into TOO_MANY_OBJECTS and a
 # monotonic FPS collapse (issue #4).
 LimitNOFILE=65536
-ExecStart=/usr/lib/waydroid-nvidia/virgl_test_server --venus --multi-clients --socket-path /run/waydroid-venus/venus.sock
+# --no-virgl: this stack is Venus-only. Leaving vrend/EGL enabled makes
+# virgl_egl_init abort on NVIDIA proprietary (libepoxy eglCreateSyncKHR)
+# and SurfaceFlinger crash-loops against the dead socket.
+ExecStart=/usr/lib/waydroid-nvidia/virgl_test_server --no-virgl --venus --multi-clients --socket-path /run/waydroid-venus/venus.sock
 Restart=on-failure
 RestartSec=1
 
