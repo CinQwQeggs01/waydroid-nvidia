@@ -71,8 +71,7 @@ verify_android_elf() {
     [ -f "$file" ] || die "required guest payload missing: $file
 This file ships in the guest-prebuilts tarball (ANGLE / hwcomposer / surfaceflinger).
 Re-run packaging/install-from-release.sh — it fetches the prebuilts from this
-release, or falls back to Shiro836/waydroid-nvidia v0.1.2 when this tag did not
-publish them (issues #2 and #5)."
+release, or from this repository's latest release that ships them."
     header=$(LC_ALL=C readelf -hW -- "$file" 2>/dev/null) || \
         die "$file is not a complete ELF file"
     if ! grep -Eq "^[[:space:]]*Class:[[:space:]]+${expected_class}[[:space:]]*$" <<<"$header" ||
