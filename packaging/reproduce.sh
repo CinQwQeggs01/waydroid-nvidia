@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# reproduce.sh — clean-room validation of the stranger's build path, and the
-# blueprint for the eventual PKGBUILD build(). For each component it makes a
-# FRESH checkout at patches/<comp>/BASE, applies the patch series + net-new
-# src, and builds via the SAME build/<comp>/build.sh the dev loop uses.
+# reproduce.sh — clean-room validation of the stranger's build path. For each
+# component it makes a FRESH checkout at patches/<comp>/BASE, applies the
+# patch series + net-new src, and builds via the SAME build/<comp>/build.sh
+# the dev loop uses.
 #
-#   packaging/aur/reproduce.sh [mesa|virgl|hwc|gralloc|waydroid|all]
+#   packaging/reproduce.sh [mesa|virgl|hwc|gralloc|waydroid|all]
 #
 # Source of the fresh checkout:
 #   SRC_MODE=worktree  (default) git worktree off the local clone — fast, no download
@@ -13,7 +13,7 @@
 # mesa/virgl build fully clean-room. hwc/gralloc compile here but still lean on
 # hand-provisioned prereqs under $WNV (see PREREQS.md) — flagged, not hidden.
 set -uo pipefail
-REPO="$(cd "$(dirname "$0")/../.." && pwd)"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 source "$REPO/dev/env.sh"
 
 WORK="${WORK:-$(mktemp -d "${TMPDIR:-/tmp}/wdnv-repro.XXXXXX")}"

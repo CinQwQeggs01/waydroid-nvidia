@@ -1,7 +1,7 @@
 # Build prerequisites — status: CLOSED (all components clean-room since v0.1.1)
 
 Every component is CI-built from pinned public sources; this file documents
-how each build is provisioned. `packaging/aur/reproduce.sh` runs the same
+how each build is provisioned. `packaging/reproduce.sh` runs the same
 clone→apply→build path locally. The hwcomposer prerequisites below are
 assembled automatically by `build/hwcomposer/provision.sh` from
 `packaging/ci/hwc-pins.env` — the manual `$WNV` description is kept as
@@ -40,18 +40,5 @@ own shared libraries. Today these are hand-built under `$WNV`
   from `/var/lib/waydroid/rootfs/vendor/lib64`, which is only mounted once the
   container has started. `build.sh` guards on this and tells you.
 
-## Plan to close it (M8.6-era, with the framework rebuild)
-
-Per the roadmap, the real installable package waits for **M8.6** (fold every
-component into a LineageOS-20 waydroid image, retire the runtime bind-mounts).
-At that point:
-
-1. A `provision.sh` scripts the AOSP shallow clones + hidl-gen + ndk-prefix +
-   ndk-pkgconfig (pinned commits, like `patches/*/BASE`).
-2. `PKGBUILD` `source=()` pins upstreams; `prepare()` applies `patches/` +
-   drops `src/`; `build()` calls the same `build/<comp>/build.sh` this repo
-   already uses; `package()` installs into the image, not `nv/` bind-mounts.
-3. `reproduce.sh` becomes the CI smoke test for that PKGBUILD's `build()`.
-
-Until then: `reproduce.sh` is the continuous check that the recipe and patches
-still apply and build.
+`reproduce.sh` is the continuous check that the recipe and patches still
+apply and build.
